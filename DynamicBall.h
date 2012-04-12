@@ -1,6 +1,6 @@
 #ifndef DYNAMICBALL_H
 #define DYNAMICBALL_H
-
+#include "ResourceManager.h"
 #include "Collidable.h"
 #include <SFML/Graphics.hpp>
 #include "Constants.h"
@@ -21,13 +21,13 @@ class DynamicBall : public Collidable
         void onCollisionEnd(const std::string& name, b2Contact* contact);
 
         void shoot(float x, float y);
-        sf::Vector2f getPosition(){return CIRCLE.getPosition();}
+        sf::Vector2f getPosition(){return sprite.getPosition();}//sf::Vector2f(body->GetPosition().x, body->GetPosition().y);}
 
 
     private:
         bool flying;
         bool hit;
-        sf::CircleShape CIRCLE;
+        sf::Sprite sprite;
         sf::VertexArray line;
 };
 
