@@ -4,13 +4,12 @@
 #include <Box2D/Box2D.h>
 #include "Constants.h"
 #include "tinyxml/tinyxml.h"
-#include "PlayerBox.h"
-#include "Tile.h"
-#include <iostream>
 #include "DebugDraw.h"
 #include "DynamicBall.h"
 #include "DynamicBox.h"
 #include "ContactListener.h"
+#include "StaticBox.h"
+#include "ResourceManager.h"
 
 const int LEVEL_WIDTH = 2000;
 

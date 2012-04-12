@@ -6,19 +6,18 @@ DynamicBall::DynamicBall(float x, float y, float radius, b2World& world) : Colli
     b2CircleShape SHAPE;
     b2FixtureDef FIX;
 
-    DEF.position.Set(x/PPM, y/PPM);
+    sprite.setTexture(rm->getTexture("ball.png"));
+    sprite.setOrigin(10, 10);
+
+    DEF.position.Set((x + sprite.getGlobalBounds().width/2.f)/PPM, (y + sprite.getGlobalBounds().height/2.f)/PPM);
     DEF.type = b2_dynamicBody;
     DEF.fixedRotation = true;
-    CIRCLE = sf::CircleShape(radius, 20);
-    CIRCLE.setOrigin(radius, radius);
-    CIRCLE.setFillColor(sf::Color::White);
-    CIRCLE.setOutlineColor(sf::Color::Black);
-    CIRCLE.setOutlineThickness(1);
-    SHAPE.m_radius = radius/PPM;
+
+    SHAPE.m_radius = 10.f/PPM;
     body = world.CreateBody(&DEF);
     FIX.shape = &SHAPE;
-    FIX.density = .4f;
-    FIX.friction = .5f;
+    FIX.density = .8f;
+    FIX.friction = .2f;
     body->CreateFixture(&FIX);
     body->SetActive(false);
 
@@ -42,13 +41,13 @@ void DynamicBall::shoot(float x, float y)
         b2Vec2 pos = body->GetPosition();
         float X = pos.x*PPM - x;
         float Y = pos.y*PPM - y;
-        body->ApplyLinearImpulse(b2Vec2(X/16.f, Y/16.f), body->GetPosition());
+        body->ApplyLinearImpulse(b2Vec2(X/25.f, Y/25.f), body->GetPosition());
     }
 }
 
 void DynamicBall::draw(sf::RenderWindow* window)
 {
-    window->draw(CIRCLE);
+    window->draw(sprite);
     if(!flying)
         window->draw(line);
 }
@@ -57,10 +56,9 @@ void DynamicBall::update(sf::Vector2i mousePos)
 {
     line[0] = sf::Vertex(sf::Vector2f(body->GetPosition().x*PPM, body->GetPosition().y*PPM));
     line[1] = sf::Vertex(sf::Vector2f(mousePos.x, mousePos.y));
-    CIRCLE.setPosition(body->GetPosition().x*PPM, body->GetPosition().y*PPM);
-    CIRCLE.setRotation(body->GetAngle() / 3.14 * 180);
+    sprite.setPosition(body->GetPosition().x*PPM, body->GetPosition().y*PPM);
 
-    if(CIRCLE.getGlobalBounds().top > HEIGHT)
+    if(sprite.getGlobalBounds().top > HEIGHT)
         hit = true;
 }
 

@@ -17,6 +17,7 @@ Level::Level(const std::string& levelFilename, sf::RenderWindow* window) : debug
     loadFile(levelFilename);
     previewMode = true;
 
+
 }
 
 void Level::loadFile(const std::string& filename)
