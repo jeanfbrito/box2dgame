@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Box2D test" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\Box2D test" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="..\..\Program Files (x86)\Box2D\include" />
+				</Compiler>
+				<Linker>
+					<Add library="Box2D" />
+					<Add library="sfml-graphics-d" />
+					<Add library="sfml-window-d" />
+					<Add library="sfml-audio-d" />
+					<Add library="sfml-system-d" />
+					<Add library="thor-d" />
+					<Add directory="..\..\Program Files (x86)\Box2D\lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\Box2D test" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-DSFML_STATIC" />
+					<Add option="-DTHOR_STATIC" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="Box2d" />
+					<Add library="sfml-graphics-s" />
+					<Add library="sfml-window-s" />
+					<Add library="sfml-audio-s" />
+					<Add library="sfml-system-s" />
+					<Add library="thor-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="..\..\Program Files (x86)\Box2D\include" />
+		</Compiler>
+		<Linker>
+			<Add directory="..\..\Program Files (x86)\Box2D\lib" />
+		</Linker>
+		<Unit filename="Collidable.cpp" />
+		<Unit filename="Collidable.h" />
+		<Unit filename="Constants.h" />
+		<Unit filename="ContactListener.cpp" />
+		<Unit filename="ContactListener.h" />
+		<Unit filename="DebugDraw.cpp" />
+		<Unit filename="DebugDraw.h" />
+		<Unit filename="DynamicBall.cpp" />
+		<Unit filename="DynamicBall.h" />
+		<Unit filename="DynamicBox.cpp" />
+		<Unit filename="DynamicBox.h" />
+		<Unit filename="Level.cpp" />
+		<Unit filename="Level.h" />
+		<Unit filename="ResourceManager.cpp" />
+		<Unit filename="ResourceManager.h" />
+		<Unit filename="StaticBox.cpp" />
+		<Unit filename="StaticBox.h" />
+		<Unit filename="Tile.cpp" />
+		<Unit filename="Tile.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="playerBox.cpp" />
+		<Unit filename="playerBox.h" />
+		<Unit filename="tinyxml\tinystr.cpp" />
+		<Unit filename="tinyxml\tinystr.h" />
+		<Unit filename="tinyxml\tinyxml.cpp" />
+		<Unit filename="tinyxml\tinyxml.h" />
+		<Unit filename="tinyxml\tinyxmlerror.cpp" />
+		<Unit filename="tinyxml\tinyxmlparser.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
