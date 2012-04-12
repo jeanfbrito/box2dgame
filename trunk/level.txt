@@ -1,0 +1,12 @@
+12 251.98 503.545 0 pillar.txt
+320.028 503.566 0 pillar.txt
+398.977 503.565 0 pillar.txt
+484.003 503.551 0 pillar.txt
+405.943 495.158 0 planck.txt
+249.034 495.098 0 planck.txt
+320.276 398.892 0 pillar.txt
+404.744 398.886 0 pillar.txt
+329.045 390.571 0 planck.txt
+360.037 358.25 0 box.txt
+363.955 261.839 0 pillar.txt
+358.952 236.427 0 chest.txt
