@@ -10,6 +10,8 @@
 #include "ContactListener.h"
 #include "StaticBox.h"
 #include "ResourceManager.h"
+#include <Thor/Time/StopWatch.hpp>
+#include "Chest.h"
 
 const int LEVEL_WIDTH = 2000;
 
@@ -23,6 +25,8 @@ class Level
         void update();
         void handle();
 
+        bool isCompleted(){return completed;}
+
 
     private:
         void adjustView();
@@ -32,9 +36,13 @@ class Level
         int width;
         int height;
         bool previewMode;
+        bool completed;
+        bool allChestsOpened;
 
+        sf::Text nextLevelText;
         std::vector<DynamicBall*> balls;
         std::vector<DynamicBox*> boxes;
+        std::vector<Chest*> chests;
         std::vector<StaticBox*> statics;
         b2World* world;
         sf::Sprite background;
@@ -43,6 +51,7 @@ class Level
         sf::RenderWindow* window;
         sf::View view;
         sf::Clock showLevelClock;
+        thor::StopWatch stopwatch;
         bool debug;
 
 };

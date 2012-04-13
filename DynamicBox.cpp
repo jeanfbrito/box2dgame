@@ -1,9 +1,9 @@
 #include "DynamicBox.h"
-#include "ResourceManager.h"
+
 #include <fstream>
 #include <iostream>
 
-DynamicBox::DynamicBox(std::string name, float x, float y, float rotation, b2World& world) : Collidable(name), rotatable(true)
+DynamicBox::DynamicBox(std::string name, float x, float y, float rotation, b2World& world) : Collidable(name)
 {
     std::ifstream file(name.c_str());
     float density;
@@ -52,32 +52,7 @@ void DynamicBox::draw(sf::RenderWindow* window)
 void DynamicBox::update()
 {
     sprite.setPosition(body->GetPosition().x*PPM, body->GetPosition().y*PPM); //update the visible rectangle to match the Box2D representation.
-    if(rotatable)
-        sprite.setRotation(body->GetAngle() / 3.14 * 180); //body returns the angle in radians, so we need to convert to degrees.
-}
-
-
-void DynamicBox::postSolve(b2Contact *contact, const b2ContactImpulse *impulse)
-{
-    if(name == "chest.txt")
-    {
-        int32 count = contact->GetManifold()->pointCount;
-        float32 maxImpulse = 0.0f;
-        for (int32 i = 0; i < count; ++i)
-        {
-            maxImpulse = b2Max(maxImpulse, impulse->normalImpulses[i]);
-        }
-
-        if(maxImpulse > 1.f)
-        {
-            sprite.setTexture(rm->getTexture("openChest.png"));
-        }
-    }
-}
-
-void DynamicBox::setRotatable(bool rot)
-{
-    rotatable = rot;
+    sprite.setRotation(body->GetAngle() / 3.14 * 180); //body returns the angle in radians, so we need to convert to degrees.
 }
 
 void DynamicBox::jump(float power)
