@@ -1,7 +1,7 @@
 #include "Level.h"
 #include <fstream>
 
-Level::Level(const std::string& levelFilename, sf::RenderWindow* window) : debug(false), window(window)
+Level::Level(const std::string& levelFilename, sf::RenderWindow* window) : debug(false), window(window), completed(false)
 {
     world = new b2World(b2Vec2(0, 9.8f));
     debugdrawer = new DebugDraw(window);
@@ -17,7 +17,8 @@ Level::Level(const std::string& levelFilename, sf::RenderWindow* window) : debug
     loadFile(levelFilename);
     previewMode = true;
 
-
+    nextLevelText.setCharacterSize(25);
+    nextLevelText.setString("Press Enter for next level!");
 }
 
 void Level::loadFile(const std::string& filename)
@@ -40,8 +41,10 @@ void Level::loadFile(const std::string& filename)
         file >> x >> y >> rot >> name;
         std::string temp;
         getline(file, temp);
-
-        boxes.push_back(new DynamicBox(name, x+600, y + (168-96), rot, *world));
+        if(name != "chest.txt")
+            boxes.push_back(new DynamicBox(name, x+600, y + (168-96), rot, *world));
+        else
+            chests.push_back(new Chest(x+600, y + (168-96), rot, *world));
     }
 }
 
@@ -51,11 +54,21 @@ void Level::draw()
     window->draw(background);
     for(int i = 0; i < boxes.size(); i++)
         boxes[i]->draw(window);
+    for(int i = 0; i < chests.size(); i++)
+        chests[i]->draw(window);
+
+
     if(!previewMode)
     {
         adjustView();
         for(int i = 0; i < balls.size(); i++)
             balls[i]->draw(window);
+    }
+
+    if(allChestsOpened)
+    {
+        nextLevelText.setPosition(window->convertCoords(sf::Vector2i(WIDTH/2.f - 75, HEIGHT/2.f - 25), window->getView()));
+        window->draw(nextLevelText);
     }
 
     if(debug)
@@ -69,6 +82,13 @@ void Level::update()
         balls[i]->update(sf::Vector2i(window->convertCoords(sf::Mouse::getPosition(*window), window->getView())));
     for(int i = 0; i < boxes.size(); i++)
         boxes[i]->update();
+    allChestsOpened = true;
+    for(int i = 0; i < chests.size(); i++)
+    {
+        chests[i]->update();
+        if(!chests[i]->isOpen())
+            allChestsOpened = false;
+    }
 
     if(previewMode)
     {
@@ -85,11 +105,16 @@ void Level::update()
         }
     }
 
-    if(balls.back()->isHit())
+    if(balls.back()->isHit() && !allChestsOpened) //check if we need to start a new ball
     {
         for(int i = 0; i < boxes.size(); i++)
         {
             if(boxes[i]->isAwake())
+                return;
+        }
+        for(int i = 0; i < chests.size(); i++)
+        {
+            if(chests[i]->isAwake())
                 return;
         }
         for(int i = 0; i < balls.size(); i++)
@@ -97,8 +122,14 @@ void Level::update()
             if(balls[i]->isAwake())
                 return;
         }
-        balls.push_back(new DynamicBall(225, 600, 15, *world));
-        resetView();
+        if(stopwatch.getElapsedTime() > sf::seconds(1.5)) //to show the aftermath of the hit
+        {
+            balls.push_back(new DynamicBall(225, 600, 15, *world));
+            resetView();
+            stopwatch.reset(false);
+        }
+        else if(stopwatch.isRunning() == false)
+            stopwatch.start();
     }
 }
 
@@ -123,6 +154,10 @@ void Level::handle()
                     {
                         debug = !debug;
                         return;
+                    }
+                    else if(Event.key.code == sf::Keyboard::Return && allChestsOpened)
+                    {
+                        completed = true;
                     }
                     else if(Event.key.code == sf::Keyboard::Space)
                     {
@@ -189,6 +224,11 @@ void Level::clear()
     {
         delete (*itr);
         itr = statics.erase(itr);
+    }
+    for(auto itr = chests.begin(); itr != chests.end();)
+    {
+        delete (*itr);
+        itr = chests.erase(itr);
     }
 }
 
